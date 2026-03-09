@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Notifications</h2>
+<section class="card">
+{% for n in notes %}
+    <div class="update">{{ n.message }} <small>{{ n.created_at }}</small></div>
+{% else %}<p>No notifications.</p>{% endfor %}
+</section>
+{% endblock %}
