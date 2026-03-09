@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>District Authority Portal ({{ session.get('district') }})</h2>
+<section class="card">
+    <h3>Verify & Assign Issue</h3>
+    <form method="post" class="inline-form">
+        <input type="hidden" name="action" value="verify_assign" />
+        <label>Issue ID <input type="number" name="issue_id" required /></label>
+        <label>Assigned Officer <input type="text" name="assigned_officer" required /></label>
+        <label>Expected Days <input type="number" name="expected_days" value="30" required /></label>
+        <label>Status
+            <select name="status">{% for s in status_options %}<option value="{{ s }}">{{ s }}</option>{% endfor %}</select>
+        </label>
+        <label>Contractor <input type="text" name="contractor" /></label>
+        <label>Sanctioned Budget <input type="number" step="0.01" name="sanctioned_budget" /></label>
+        <label>Material Cost <input type="number" step="0.01" name="material_cost" /></label>
+        <label>Other Expenditure <input type="number" step="0.01" name="other_expenditure" /></label>
+        <label>Workers Info <input type="text" name="workers_info" /></label>
+        <label>Vendors Info <input type="text" name="vendors_info" /></label>
+        <button type="submit">Verify and Assign</button>
+    </form>
+</section>
+<section class="card">
+    <h3>Submit 10-day Style Progress Update</h3>
+    <form method="post" class="inline-form">
+        <input type="hidden" name="action" value="progress_update" />
+        <label>Issue ID <input type="number" name="issue_id" required /></label>
+        <label>Status
+            <select name="status">{% for s in status_options %}<option value="{{ s }}">{{ s }}</option>{% endfor %}</select>
+        </label>
+        <label>Update Description <input type="text" name="update_text" required /></label>
+        <label>Progress Photo URL <input type="url" name="progress_photo" /></label>
+        <button type="submit">Add Update</button>
+    </form>
+</section>
+<section class="card">
+    <h3>District Issues</h3>
+    <table>
+        <tr><th>ID</th><th>Village</th><th>Issue</th><th>Dept</th><th>Status</th><th>Timeline</th><th>Budget</th></tr>
+        {% for i in issues %}
+        <tr>
+            <td>{{ i.id }}</td><td>{{ i.village_name }}</td><td>{{ i.issue_type }}</td><td>{{ i.department }}</td>
+            <td>{{ i.status }}</td><td>{{ i.expected_completion_date or '-' }}</td><td>{{ i.sanctioned_budget or '-' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</section>
+{% endblock %}

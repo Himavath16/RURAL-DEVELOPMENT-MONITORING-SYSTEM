@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Village Representative Portal</h2>
+<section class="grid">
+<div class="card">
+    <h3>Report New Village Issue</h3>
+    <form method="post">
+        <label>Village Name <input type="text" name="village_name" value="{{ session.get('village') }}" required /></label>
+        <label>Location <input type="text" name="location" required /></label>
+        <label>Issue Type <input type="text" name="issue_type" placeholder="Broken road / leakage" required /></label>
+        <label>Department
+            <select name="department" required>
+                {% for d in departments %}<option value="{{ d }}">{{ d }}</option>{% endfor %}
+            </select>
+        </label>
+        <label>Description <textarea name="description" required></textarea></label>
+        <label>Before Photo URL <input type="url" name="before_photo" /></label>
+        <button type="submit">Submit Issue</button>
+    </form>
+</div>
+<div class="card">
+    <h3>My Issues</h3>
+    <table>
+        <tr><th>ID</th><th>Type</th><th>Status</th><th>Expected Completion</th></tr>
+        {% for i in issues %}
+        <tr><td>{{ i.id }}</td><td>{{ i.issue_type }}</td><td>{{ i.status }}</td><td>{{ i.expected_completion_date or '-' }}</td></tr>
+        {% endfor %}
+    </table>
+    <h3>Progress Feed</h3>
+    {% for u in updates %}
+      <div class="update">Issue #{{ u.issue_id }} ({{ u.issue_type }}): {{ u.update_text }} <small>{{ u.created_at }}</small></div>
+    {% else %}<p>No updates yet.</p>{% endfor %}
+</div>
+</section>
+{% endblock %}

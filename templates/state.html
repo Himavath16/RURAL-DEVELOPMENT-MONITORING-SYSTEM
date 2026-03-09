@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>State Authority Portal</h2>
+<section class="grid">
+<div class="card">
+    <h3>District Performance Dashboard</h3>
+    <table>
+        <tr><th>District</th><th>Total</th><th>Completed</th><th>In Progress</th><th>Pending</th></tr>
+        {% for d in district_stats %}
+        <tr><td>{{ d.district }}</td><td>{{ d.total }}</td><td>{{ d.completed }}</td><td>{{ d.in_progress }}</td><td>{{ d.pending }}</td></tr>
+        {% endfor %}
+    </table>
+</div>
+<div class="card">
+    <h3>All Projects</h3>
+    <table>
+        <tr><th>ID</th><th>District</th><th>Type</th><th>Status</th><th>Expected</th><th>Contractor</th></tr>
+        {% for i in issues %}
+        <tr><td>{{ i.id }}</td><td>{{ i.district }}</td><td>{{ i.issue_type }}</td><td>{{ i.status }}</td><td>{{ i.expected_completion_date or '-' }}</td><td>{{ i.contractor or '-' }}</td></tr>
+        {% endfor %}
+    </table>
+</div>
+</section>
+<section class="card">
+    <h3>Latest Progress Updates</h3>
+    {% for u in updates %}
+      <div class="update">District {{ u.district }} • Issue #{{ u.issue_id }} ({{ u.issue_type }}): {{ u.update_text }} <small>{{ u.created_at }}</small></div>
+    {% else %}<p>No updates yet.</p>{% endfor %}
+</section>
+{% endblock %}
